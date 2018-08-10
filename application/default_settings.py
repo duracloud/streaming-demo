@@ -1,0 +1,6 @@
+DURACLOUD_USERNAME = "duracloud_user"
+DURACLOUD_PASSWORD = "duracloud_password"
+DURACLOUD_SPACE_ID = "my_streaming_space"
+DURACLOUD_PROTOCOL = "http"
+DURACLOUD_HOST = "localhost"
+DURACLOUD_PORT = "8080"

@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Streaming Demo</title>
+</head>
+<body>
+    <h1>Streaming Demo</h1>
+    <div style="display:block">
+       <h2>Video List</h2>
+       <ul id="video-list">
+           {% for item in items %}
+           <li><a href="/viewer/{{ item }}">{{item}}</a></li>
+           {% endfor %}
+        </ul>
+    </div>
+</body>
+</html>

@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Streaming Demo: Video Viewer</title>
+    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+    <script src="/js/app.js"></script>
+
+</head>
+<body>
+    <h1><a href="/video-list">Streaming Demo</a></h1>
+    <div style="display:block">
+       <h2>Video Player: {{videoId}}</h2>
+       <video id="player" src="https://{{ streaming_host }}/{{videoId}}"/>
+
+    </div>
+    <script>
+        enableAV('player')
+    </script>
+</body>
+</html>
