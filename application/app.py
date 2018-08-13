@@ -95,38 +95,5 @@ def viewer(videoId=None):
 def send_js(path):
     return send_from_directory('js', path)
 
-# @app.route("/durastore/task/store-signed-cookies", methods=["POST"])
-# def store_signed_cookies():
-#     token = uuid.uuid4().__str__();
-#     print("Token = " + token)
-#     print("Content-Type = " + request.headers['Content-Type'])
-#     payload = request.get_json(silent=False)
-#     print("Request Data = " + json.dumps(payload))
-#
-#     cookie_jar[token] = payload
-#
-#     return json.dumps({"token": token})
-
-
-# @app.route("/cloudfront/<token>")
-# def set_cookies(token=None):
-#     value = cookie_jar[token]
-#     print("value = " + json.dumps(value))
-#
-#     signed_cookies = value['signedCookies']
-#
-#     print("Token=" + token)
-#
-#     print("signed cookies = " + json.dumps(signed_cookies))
-#
-#     redirect_url = value['redirectUrl']
-#     resp = make_response(render_template("set_cookies.html",
-#                                          redirect=redirect_url))
-#     for cookie_name in signed_cookies:
-#         print("adding cookie: " + cookie_name + "=" + signed_cookies[
-#             cookie_name])
-#         resp.set_cookie(cookie_name, signed_cookies[cookie_name])
-#     return resp;
-
 
 
