@@ -31,11 +31,6 @@ def index():
                       "/task/get-signed-cookies",
                       data=json.dumps(task_params), auth=auth)
 
-    # get signed cookies
-    r = requests.post(get_duracloud_base_url() +
-                      "/task/get-signed-cookies",
-                      data=json.dumps(task_params), auth=auth)
-
     signed_cookies = r.json()
 
     #get streaming host

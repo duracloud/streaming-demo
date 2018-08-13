@@ -11,8 +11,8 @@
     <h1><a href="/video-list">Streaming Demo</a></h1>
     <div style="display:block">
        <h2>Video Player: {{videoId}}</h2>
-       <video id="player" src="https://{{ streaming_host }}/{{videoId}}"/>
-
+       <video id="player" src="https://{{ streaming_host }}/{{videoId}}"
+       controls />
     </div>
     <script>
         enableAV('player')
