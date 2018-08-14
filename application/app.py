@@ -30,7 +30,6 @@ def index():
     r = requests.post(get_duracloud_base_url() +
                       "/task/get-signed-cookies",
                       data=json.dumps(task_params), auth=auth)
-
     signed_cookies = r.json()
 
     #get streaming host
@@ -39,7 +38,7 @@ def index():
     # add streaming host
     signed_cookies['streamingHost'] = streaming_host
     # add redirect url
-    signed_cookies['redirectUrl'] = 'http://localhost:5000/video-list'
+    signed_cookies['redirectUrl'] = "http://" + get_prop("SERVER_NAME") + "/video-list" 
 
     # store signed cookies in durastore
     #change this value to duracloud store cookies url
