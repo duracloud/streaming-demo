@@ -4,6 +4,9 @@ import requests, json, os
 import xml.etree.ElementTree as etree
 
 app = Flask(__name__)
+app.config['SESSION_TYPE'] = 'memcached'
+app.config['SECRET_KEY'] = 'secretkey'
+
 
 app.config.from_object('application.default_settings')
 
