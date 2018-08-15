@@ -1,5 +1,5 @@
 from flask import Flask
-from flask import render_template, redirect, send_from_directory
+from flask import render_template, redirect, send_from_directory, session, url_for
 import requests, json, os
 import xml.etree.ElementTree as etree
 
@@ -19,43 +19,26 @@ def get_auth():
 
 def get_space_id():
     return get_prop("DURACLOUD_SPACE_ID")
-@app.route("/")
-def index():
+
+def has_configured_cookies():
+    return session.get("has_cookies", False)
+
+def configure_cookies(redirect_path):
     auth = get_auth()
     space_id = get_space_id()
-    task_params = {'spaceId' : space_id}
+    redirect_url = "http://" + get_prop("SERVER_NAME") + \
+                                    redirect_path
 
-    # get signed cookies
-    auth = get_auth()
-    r = requests.post(get_duracloud_base_url() +
-                      "/task/get-signed-cookies",
-                      data=json.dumps(task_params), auth=auth)
-    signed_cookies = r.json()
+    task_params = {'spaceId' : space_id, "redirectUrl" : redirect_url}
 
-    #get streaming host
-    streaming_host = get_streaming_host()
+    r = requests.post(get_duracloud_base_url() + "/task/get-signed-cookies-url",
+                      json=task_params,  auth=auth)
 
-    # add streaming host
-    signed_cookies['streamingHost'] = streaming_host
-    # add redirect url
-    signed_cookies['redirectUrl'] = "http://" + get_prop("SERVER_NAME") + "/video-list" 
+    signed_cookies_url = r.json()['signedCookiesUrl'];
 
-    # store signed cookies in durastore
-    #change this value to duracloud store cookies url
-    store_cookies_url = get_duracloud_base_url() + "/task/store-signed-cookies"
-    r = requests.post(store_cookies_url,
-                      json=signed_cookies,  auth=auth)
-
-    token = r.json()['token'];
-    print("token returned = " + token);
-
-    #redirect to cloudfront set cookies url
-    cloudfront_set_cookies_url = "https://" + streaming_host + \
-                                 "/cookies?token=" \
-                                 + token
-
-    print("redirecting to " + cloudfront_set_cookies_url)
-    return redirect(cloudfront_set_cookies_url)
+    print("signed_cookies_url=" + signed_cookies_url)
+    session.update({'has_cookies': True })
+    return redirect(signed_cookies_url)
 
 def get_streaming_host():
     r = requests.get(get_duracloud_base_url() + "/" + get_space_id(), auth=get_auth())
@@ -67,8 +50,12 @@ def get_duracloud_base_url():
     return get_prop("DURACLOUD_PROTOCOL") + "://" + get_prop("DURACLOUD_HOST") + ":" + \
            get_prop("DURACLOUD_PORT") + "/durastore";
 
-@app.route("/video-list")
+
+@app.route("/")
 def video_list():
+    if not has_configured_cookies():
+        return configure_cookies('/')
+
 
     resp = requests.get(get_duracloud_base_url() + "/" + get_space_id(),
                  auth=get_auth())
@@ -84,6 +71,8 @@ def video_list():
 
 @app.route("/viewer/<videoId>")
 def viewer(videoId=None):
+    if not has_configured_cookies():
+        return configure_cookies('/viewer/' + videoId)
 
     streaming_host = get_streaming_host()
 
