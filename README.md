@@ -41,6 +41,8 @@ DURACLOUD_HOST = "localhost"
 DURACLOUD_PORT = "8080"
 # external hostname and port for the application
 SERVER_NAME = "my-streaming-demo.example.org:5000"   
+# generate a secret, any secret here
+SECRET_KEY = "a super secret string goes here"
 ```
 ## Run the application
 ```
